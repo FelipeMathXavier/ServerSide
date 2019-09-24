@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= executives.nome %></title>
+    <%- include('imports'); -%>
+  </head>
+  <body>
+    <%- include('navbar'); -%>
+
+    <div class="executives container">
+      <div class="row">
+
+        <% executives.forEach((executives) => { %>
+          <%- include('executives-card', { executives: executives }); -%>
+        <% }); %>
+
+      </div>
+    </div>
+
+  </body>
+</html>

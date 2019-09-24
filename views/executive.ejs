@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <%- include('imports'); -%>
+  </head>
+  <body>
+    <%- include('navbar'); -%>
+
+    <div class="executive container">
+      <div class="row">
+
+        <div class="post-detail">
+            <img src="/images/<%= executives.imagem %>" />
+            <h1><%= executives.nome %></h1>
+            <p><%= executives.cargo %></p>
+            <a href="<%= executives.linkedin%>">Linkedin</a>
+        </div>
+
+
+      </div>
+    </div>
+
+  </body>
+</html>
