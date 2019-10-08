@@ -1,20 +1,31 @@
+var fs = require('fs');
 
+var projectsFilePath = 'db/projects.json';
 
-var getProjects = function() {
-  var projects = [
-    {
-      id: 1,
-      title: 'Calculadora de juros em python',
-      image: 'python.png',
-      description: 'Aplicativo feito em Python que calcula os juros compostos dentro de um determinado tempo.',
-      body: 'Foi um aplicativo que criei que consiste em calcular os juros compostos de uma aplicação em uma conta de banco onde o usuário consegue definir todos os parâmetros que são necessários para a base de cálculo.',
-    },
-    
-  ];
+var loadFileProjects = function() {
+  var fileData = fs.readFileSync(projectsFilePath, 'utf8');
+  var projects = JSON.parse(fileData);
 
   return projects;
 }
 
+var saveFileProjects = function(projects) {
+  var data = JSON.stringify(projects);
+  fs.writeFileSync(projectsFilePath, data, 'utf8');
+}
+
+var getProjects = function() {
+  var projects = loadFileProjects();
+  return projects;
+}
+
+var saveProjects = function(newProject) {
+  var projects = loadFileProjects();
+  projects.push(newProject);
+  saveFileProjects(projects);
+}
+
 module.exports = {
-  getProjects: getProjects
+  getProjects: getProjects,
+  saveProjects: saveProjects
 }
