@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var projectsService = require('../../services/projectService');
+var upload = require('../../middlewares/uploaderMiddleware');
 
 router.get('/', function(req, res, next) {
   var project = projectsService.getProjects();
@@ -17,7 +18,7 @@ router.get('/create', function(req, res, next) {
   res.render('admin/projects/create');
 });
 
-router.post('/create', function(req, res, next) {
+router.post('/create', upload.single('image'), function(req, res, next) {
   var project = projectsService.getProjects();
 
   var newId = project.length + 1;
@@ -25,7 +26,7 @@ router.post('/create', function(req, res, next) {
   var newProject = {};
   newProject.id = newId;
   newProject.title = req.body.title;
-  newProject.image = req.body.image;
+  newProject.image = req.file.filename;
   newProject.description = req.body.description;
   newProject.body = req.body.postBody;
 

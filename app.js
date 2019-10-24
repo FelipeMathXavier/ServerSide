@@ -3,13 +3,24 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminPostsRouter = require('./routes/admin/post');
-var adminProjectsRouter = require('./routes/admin/project')
+var adminProjectsRouter = require('./routes/admin/project');
+var authRouter = require('./routes/auth');
+var verifyAuth = require('./middlewares/authMiddleware');
 
 var app = express();
+
+app.set('trust proxy', 1);
+app.use(session({
+  secret: 'mySecret123',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,7 +33,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/admin/posts', adminPostsRouter);
+app.use('/auth', authRouter);
+app.use('/admin/posts', [verifyAuth],  adminPostsRouter);
 app.use('/admin/projects', adminProjectsRouter);
 app.use('/users', usersRouter);
 
